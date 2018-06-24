@@ -56,7 +56,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 final String prodName,prodFault,prodBrand,ownerName,ownerPhone,ownerLocation;
                 int prodImg;
                 ImageView call,msg;
-                Toast.makeText(context, "Ali baba", Toast.LENGTH_SHORT).show();
                 prodName= products.get(position).getpName();
                 prodFault= products.get(position).getpFault();
                 prodBrand= products.get(position).getpBrand();
