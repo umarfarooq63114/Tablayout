@@ -31,8 +31,8 @@ public class Technician {
     String name;
 
     public Technician(String t_name, String cnic, String address,
-                      String email,String password, int status, String phone,
-                      String experience, double rating, int specaility_id,String image) {
+                      String email, String password, int status, String phone,
+                      String experience, double rating, int specaility_id, String image) {
         this.t_name = t_name;
         this.cnic = cnic;
         this.address = address;

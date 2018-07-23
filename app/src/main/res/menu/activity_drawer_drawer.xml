@@ -7,22 +7,19 @@
 
 
         <item
-            android:id="@+id/ncamera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Home"
-            tools:ignore="DuplicateIds" />
-
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
             android:title="Home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Status" />
+            android:id="@+id/nav_technician"
 
+            android:title="Technicians" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_cart"
+
+            android:title="Services added List" />
+        <item
+            android:id="@+id/nav_setting"
             android:icon="@drawable/ic_menu_manage"
             android:title="Setting" />
     </group>
@@ -34,10 +31,9 @@
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout"
                 android:title="Logout" />
         </menu>
     </item>
-
 </menu>

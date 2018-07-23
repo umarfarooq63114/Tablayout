@@ -19,7 +19,7 @@
           android:layout_height="wrap_content"
           android:id="@+id/tvStatus"
           android:layout_gravity="center_vertical|center_horizontal"
-          android:text="ON"
+          android:text="OFF"
           android:textAllCaps="true"
           android:textSize="12sp" />
       <Switch
@@ -52,6 +52,11 @@
         android:id="@+id/llRating"
 
         android:orientation="vertical">
+      <Button
+          android:layout_width="match_parent"
+          android:id="@+id/btnDone"
+          android:layout_height="wrap_content"
+          android:text="Done "/>
 
     </LinearLayout>
   </LinearLayout>

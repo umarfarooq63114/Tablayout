@@ -21,7 +21,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img"
+        android:id="@+id/techImg"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="25dp"

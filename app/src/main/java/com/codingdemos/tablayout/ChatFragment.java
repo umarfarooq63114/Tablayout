@@ -23,7 +23,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.codingdemos.tablayout.Model.Notificaton;
 import com.codingdemos.tablayout.Model.Product;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +46,7 @@ public class ChatFragment extends Fragment {
     Button not;
     View view;
     private List<Product> own;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -115,16 +120,29 @@ public class ChatFragment extends Fragment {
         super.onCreate(savedInstanceState);
         int pic1 = R.drawable.pix;
         own = new ArrayList<>();
+
         String name = null, phone = null;
         float ratingbar = (float) 1.5;
 
+
+
         for (int i = 1; i <= 5; i++) {
+
+
             own.add(new Product("SAMSUNG "+i, "MOBILE", pic1,
                     "Screen and microphone does not working and battery issue",
                     "Umar Farooq","03104187789","lahore"));
         }
 
     }
+
+
+
+
+
+
+
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
