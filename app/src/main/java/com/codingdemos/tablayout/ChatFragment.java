@@ -9,11 +9,14 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +31,7 @@ import com.codingdemos.tablayout.Model.Product;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,77 +46,59 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class ChatFragment extends Fragment {
     private static final int TAG_SIMPLE_NOTIFICATION = 1;
     private RecyclerView recyclerView;
-    private ProductAdapter productAdapter;
+    private DataAdapter dataAdapter;
     Button not;
     View view;
-    private List<Product> own;
+    SwipeRefreshLayout swipeRefreshLayout;
+    private List<Data> own;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
-        view= inflater.inflate(R.layout.fragment_chat, container, false);
-        recyclerView =(RecyclerView) view.findViewById(R.id.recyclerView);
-        not= view.findViewById(R.id.not);
+        view = inflater.inflate(R.layout.fragment_chat, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+
         //sendNotification();
-        productAdapter = new ProductAdapter( own,getContext());
+
+
+        swipeRefreshLayout=view.findViewById(R.id.swipe);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onResfreshData();
+                removeSingleItem();
+                dataInitilization();
+                dataAdapter.notifyDataSetChanged();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                },500);
+            }
+        });
+
+        onResfreshData();
+        return view;
+    }
+
+
+
+
+
+
+
+
+    public void onResfreshData()
+    {
+        dataAdapter = new DataAdapter(own, getContext());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        not.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showSimpleNotification();
-            }
-        });
-        recyclerView.setAdapter(productAdapter);
-        return  view;
+        recyclerView.setAdapter(dataAdapter);
     }
-
-
-    private PendingIntent pendingIntentForNotification() {
-        //Create the intent you want to show when the notification is clicked
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-
-        //Add any extras (in this case, that you want to relaunch this fragment)
-        //intent.putExtra(MainActivity.EXTRA_FRAGMENT_TO_LAUNCH, MainActivity.TAG_NOTIFICATION_FRAGMENT);
-
-        //This will hold the intent you've created until the notification is tapped.
-        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 1, intent, 0);
-        return pendingIntent;
-    }
-    private void showSimpleNotification() {
-        //Use the NotificationCompat compatibility library in order to get gingerbread support.
-        Notification notification = new NotificationCompat.Builder(getActivity())
-                //Title of the notification
-                .setContentTitle("ABC")
-                //Content of the notification once opened
-                .setContentText("ABC")
-                //This bit will show up in the notification area in devices that support that
-                .setTicker("ABC")
-                //Icon that shows up in the notification area
-                .setSmallIcon(R.drawable.calendar)
-                //Icon that shows up in the drawer
-                .setLargeIcon(BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.ic_launcher))
-                //Set the intent
-                .setContentIntent(pendingIntentForNotification())
-                //Build the notification with all the stuff you've just set.
-                .build();
-
-        //Add the auto-cancel flag to make it dismiss when clicked on
-        //This is a bitmask value so you have to pipe-equals it.
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-        //Grab the NotificationManager and post the notification
-        NotificationManager notificationManager = (NotificationManager)
-                getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-
-        //Set a tag so that the same notification doesn't get reposted over and over again and
-        //you can grab it again later if you need to.
-        notificationManager.notify(TAG_SIMPLE_NOTIFICATION, notification);
-    }
-
 
 
     @Override
@@ -123,24 +109,26 @@ public class ChatFragment extends Fragment {
 
         String name = null, phone = null;
         float ratingbar = (float) 1.5;
+        dataInitilization();
 
-
-
-        for (int i = 1; i <= 5; i++) {
-
-
-            own.add(new Product("SAMSUNG "+i, "MOBILE", pic1,
-                    "Screen and microphone does not working and battery issue",
-                    "Umar Farooq","03104187789","lahore"));
-        }
 
     }
 
 
+public void dataInitilization()
+{
+    own.add(new Data(Drawer.id, "" + Drawer.brand_name, "" + Drawer.item_name, "" + Drawer.fault,
+            "" + Drawer.own_name, "" + Drawer.own_mobile, "" + Drawer.own_location,
+            "" + Drawer.own_image, Drawer.tech_id,
+            "" + Drawer.dateOfBooking, "" + Drawer.timeOfBooking));
+}
 
 
-
-
+    private void removeSingleItem() {
+        int removeIndex = 0;
+        own.remove(removeIndex);
+        dataAdapter.notifyItemRemoved(removeIndex);
+    }
 
 
 

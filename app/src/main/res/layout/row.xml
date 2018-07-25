@@ -27,7 +27,7 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/pImage"
+                android:id="@+id/ivOwnImage"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_gravity="center"
@@ -47,7 +47,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/pBrand"
+                        android:id="@+id/ItemName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -64,7 +64,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/pName"
+                        android:id="@+id/Category"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -77,7 +77,7 @@
                 </LinearLayout>
                 <TextView
 
-                    android:id="@+id/pFault"
+                    android:id="@+id/tvFault"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Screen and microphone does not working and battery issue" />

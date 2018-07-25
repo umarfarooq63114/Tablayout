@@ -29,8 +29,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.codingdemos.tablayout.Drawer.*;
-import static com.codingdemos.tablayout.Drawer.userEmaiId;
+import static com.codingdemos.tablayout.Fragments.Login_Fragment.technicianStatus;
+import static com.codingdemos.tablayout.Fragments.Login_Fragment.userEmaiId;
 
 
 /**
@@ -107,7 +107,6 @@ else
                     for (int i = 1; i < list.size(); i++) {
                         if (userEmaiId.equals(list.get(i).getEmail())) {
                             rat = list.get(i).getRating();
-
                             break;
                         }
 

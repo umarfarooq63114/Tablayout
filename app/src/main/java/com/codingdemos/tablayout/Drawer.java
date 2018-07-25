@@ -41,16 +41,22 @@ import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
+import static com.codingdemos.tablayout.Fragments.Login_Fragment.technicianName;
+import static com.codingdemos.tablayout.Fragments.Login_Fragment.technicianStatus;
+import static com.codingdemos.tablayout.Fragments.Login_Fragment.userEmaiId;
+import static com.codingdemos.tablayout.Fragments.Login_Fragment.technicianPhoto;
+
 public class Drawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar toolbar;
     TabLayout tabLayout;
     TextView userName;
     ViewPager viewPager;
-    public static String userEmaiId;
-    public static String technicianName;
-    public static String technicianPhoto;
-    public static int technicianStatus;
+    public static Integer tech_id,id;
+
+
+    public static String brand_name,item_name,fault,own_name,own_mobile,own_location,
+            own_image,dateOfBooking,timeOfBooking;
 
     private static final String TAG = "MTAG";
     PageAdapter pageAdapter;
@@ -65,15 +71,7 @@ public class Drawer extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
-        if (null != intent) { //Null Checking
-            userEmaiId = intent.getStringExtra("email");
-            technicianName = intent.getStringExtra("user_name");
-            technicianPhoto = intent.getStringExtra("user_image");
-            technicianStatus = intent.getIntExtra("user_status",0);
 
-
-        }
         Toast.makeText(this, "Login user is " + userEmaiId + "user name: " + technicianName, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "User status"+technicianStatus, Toast.LENGTH_LONG).show();
 
@@ -158,9 +156,10 @@ public class Drawer extends AppCompatActivity
                 Log.d(TAG,data);
                 Gson gson = new Gson();
 
-                String json="{\"id\":\"44\",\"brand_name\":\"s9\",\"item_name\":\"samsung\",\"fault\":\"screen\",\"technician_id\":\"1\"," +
+                /*String json="{\"id\":\"44\",\"brand_name\":\"s9\",\"item_name\":\"samsung\",\"fault\":\"screen\"" +
+                        ",\"technician_id\":\"1\"," +
                         "\"dateOfBooking\":\"2018-07-26\",\"timeOfBooking\":\"08:06:15\",\"created_at\":\"2018-07-20 09:19:00\"," +
-                        "\"updated_at\":\"2018-07-20 09:19:00\"}";
+                        "\"updated_at\":\"2018-07-20 09:19:00\"}";*/
 
 
 
@@ -169,13 +168,14 @@ public class Drawer extends AppCompatActivity
 
 
                 // Serializing Json to Respective POJO
-                Notificaton message = gson.fromJson(json,Notificaton.class);
+                MyClass message = gson.fromJson(data,MyClass.class);
+
                 //notif.add(new Notificaton(noti));
                 Intent i = new Intent(Drawer.this, Notification.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(Drawer.this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
                 NotificationCompat.Builder notification = new NotificationCompat.Builder(Drawer.this, "Channel1")
-                        .setContentTitle(message.getFault())
-                        .setContentText(message.getBrand_name())
+                        .setContentTitle(message.getData().getFull_name())
+                        .setContentText(message.getData().getBrandName())
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
                         .setSmallIcon(R.drawable.error)
                         .setAutoCancel(true)
@@ -183,12 +183,24 @@ public class Drawer extends AppCompatActivity
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(101, notification.build());
 
+                //EventBus.getDefault().post(new MyClass message);
+                EventBus.getDefault().post(message);
+
+
+                //  Store data
+                brand_name=message.getData().getBrandName(); item_name=message.getData().getItemName();
+                fault=message.getData().getFault(); own_name=message.getData().getFull_name();
+                own_mobile=message.getData().getMobile(); own_location=message.getData().getLocation();
+                own_image=message.getData().getImage(); dateOfBooking=message.getData().getDateOfBooking();
+                timeOfBooking=message.getData().getTimeOfBooking();id=message.getData().getId();
+                tech_id=message.getData().getTechnicianId();
+
 
 
 //Notificaton notificaton=new Notificaton();
                 //Toast.makeText(MainActivity.this, "abc: "+noti.getTechnician_id().toString(), Toast.LENGTH_SHORT).show();
                 //Eventbus code for posting data to set in views
-                EventBus.getDefault().post(message);
+
 
 
 
@@ -286,7 +298,7 @@ public class Drawer extends AppCompatActivity
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
             editor.commit();
-            finish();
+            editor.apply();
             startActivity(new Intent(Drawer.this, MainActivity.class));
                /* fragmentManager
                         .beginTransaction()
