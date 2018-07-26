@@ -22,9 +22,15 @@ import android.widget.Toast;
 
 
 import com.codingdemos.tablayout.Model.Product;
+import com.codingdemos.tablayout.Retrofit.GetRetrofit;
+import com.codingdemos.tablayout.Retrofit.RetrofitClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     List<Data> data;
@@ -97,6 +103,31 @@ final TextView brand,name,fault,ownName,ownPhone,ownLoacation;
                     public void onClick(View view) {
                         btnBeforeDone.setVisibility(View.GONE);
                         btnAfterDone.setVisibility(View.VISIBLE);
+                    }
+                });
+                btnAfterDone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SendNotify sendNotify=new SendNotify(1,4,"abc.jpd","abbb");
+                        //Toast.makeText(context, "Done Work", Toast.LENGTH_SHORT).show();
+                        RetrofitClient apiInterface = GetRetrofit.getInstance().create(RetrofitClient.class);
+                        Call<SendNotify> call = apiInterface.postNotify(sendNotify);
+                        call.enqueue(new Callback<SendNotify>() {
+                            @Override
+                            public void onResponse(Call<SendNotify> call, Response<SendNotify> response) {
+                                //Toast.makeText(context, "Request successfully submitted", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(Call<SendNotify> call, Throwable t) {
+                                //Toast.makeText(context, "Request Failed", Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        });
+
+
                     }
                 });
 

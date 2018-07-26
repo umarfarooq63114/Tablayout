@@ -36,7 +36,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
     implementation 'com.squareup.okhttp:okhttp:2.7.2'
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.google.code.gson:gson:2.8.1'
     implementation 'org.greenrobot:eventbus:3.0.0'
-
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.picasso:picasso:2.5.0'
 
 }
