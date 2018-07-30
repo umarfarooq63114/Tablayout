@@ -51,8 +51,9 @@ public class Drawer extends AppCompatActivity
     Toolbar toolbar;
     TabLayout tabLayout;
     TextView userName;
+
     ViewPager viewPager;
-    public static Integer tech_id,id;
+    public static Integer tech_id,id,listCreate=0;
 
 
     public static String brand_name,item_name,fault,own_name,own_mobile,own_location,
@@ -70,6 +71,15 @@ public class Drawer extends AppCompatActivity
         setContentView(R.layout.activity_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        final SharedPreferences sharedPreferences=getSharedPreferences("My",MODE_PRIVATE);
+        userEmaiId=sharedPreferences.getString("TECHNCIAN_EMAIL","");
+        technicianName=sharedPreferences.getString("TECHNCIAN_NAME","");
+        technicianPhoto=sharedPreferences.getString("TECHNCIAN_PHOTO","");
+        technicianStatus=sharedPreferences.getInt("TECHNCIAN_STATUS",0);
+
+
+
 
 
         Toast.makeText(this, "Login user is " + userEmaiId + "user name: " + technicianName, Toast.LENGTH_SHORT).show();
@@ -156,6 +166,8 @@ public class Drawer extends AppCompatActivity
                 Log.d(TAG,data);
                 Gson gson = new Gson();
 
+
+
                 /*String json="{\"id\":\"44\",\"brand_name\":\"s9\",\"item_name\":\"samsung\",\"fault\":\"screen\"" +
                         ",\"technician_id\":\"1\"," +
                         "\"dateOfBooking\":\"2018-07-26\",\"timeOfBooking\":\"08:06:15\",\"created_at\":\"2018-07-20 09:19:00\"," +
@@ -168,35 +180,41 @@ public class Drawer extends AppCompatActivity
 
 
                 // Serializing Json to Respective POJO
+
                 MyClass message = gson.fromJson(data,MyClass.class);
-
+                listCreate=1;
                 //notif.add(new Notificaton(noti));
-                Intent i = new Intent(Drawer.this, Notification.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(Drawer.this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-                NotificationCompat.Builder notification = new NotificationCompat.Builder(Drawer.this, "Channel1")
-                        .setContentTitle(message.getData().getFull_name())
-                        .setContentText(message.getData().getBrandName())
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
-                        .setSmallIcon(R.drawable.error)
-                        .setAutoCancel(true)
-                        .setContentIntent(pendingIntent);
-                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(101, notification.build());
+    Intent i = new Intent(Drawer.this, Notification.class);
+    PendingIntent pendingIntent = PendingIntent.getActivity(Drawer.this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+    NotificationCompat.Builder notification = new NotificationCompat.Builder(Drawer.this, "Channel1")
+            .setContentTitle(message.getData().getFull_name())
+            .setContentText(message.getData().getBrandName())
+            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
+            .setSmallIcon(R.drawable.error)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent);
+    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    notificationManager.notify(101, notification.build());
 
-                //EventBus.getDefault().post(new MyClass message);
-                EventBus.getDefault().post(message);
-
-
-                //  Store data
-                brand_name=message.getData().getBrandName(); item_name=message.getData().getItemName();
-                fault=message.getData().getFault(); own_name=message.getData().getFull_name();
-                own_mobile=message.getData().getMobile(); own_location=message.getData().getLocation();
-                own_image=message.getData().getImage(); dateOfBooking=message.getData().getDateOfBooking();
-                timeOfBooking=message.getData().getTimeOfBooking();id=message.getData().getId();
-                tech_id=message.getData().getTechnicianId();
+    //EventBus.getDefault().post(new MyClass message);
+    EventBus.getDefault().post(message);
 
 
+    //  Store data
+    brand_name = message.getData().getBrandName();
+    item_name = message.getData().getItemName();
+    fault = message.getData().getFault();
+    own_name = message.getData().getFull_name();
+    own_mobile = message.getData().getMobile();
+    own_location = message.getData().getLocation();
+    own_image = message.getData().getImage();
+    dateOfBooking = message.getData().getDateOfBooking();
+    timeOfBooking = message.getData().getTimeOfBooking();
+    id = message.getData().getId();
+    tech_id = message.getData().getTechnicianId();
 
+
+}
 //Notificaton notificaton=new Notificaton();
                 //Toast.makeText(MainActivity.this, "abc: "+noti.getTechnician_id().toString(), Toast.LENGTH_SHORT).show();
                 //Eventbus code for posting data to set in views
@@ -206,7 +224,7 @@ public class Drawer extends AppCompatActivity
 
 
 
-            }
+
         });
 
         pusher.connect();

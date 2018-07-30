@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.codingdemos.tablayout.Drawer.listCreate;
 
 
 /**
@@ -109,8 +110,9 @@ public class ChatFragment extends Fragment {
 
         String name = null, phone = null;
         float ratingbar = (float) 1.5;
-        dataInitilization();
-
+        if(listCreate==1) {
+            dataInitilization();
+        }
 
     }
 
